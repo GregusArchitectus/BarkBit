@@ -1,0 +1,7 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MMA8451Q
+D 3-axis, 14-bit/8-bit digital accelerometer
+$ENDCMP
+#
+#End Doc Library

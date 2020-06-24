@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name barkbit)(type Legacy)(uri ${KIPRJMOD}/libs/barkbit.lib)(options "")(descr ""))
+  (lib (name MDBT42Q)(type Legacy)(uri ${KIPRJMOD}/libs/MDBT42Q.lib)(options "")(descr ""))
+)
