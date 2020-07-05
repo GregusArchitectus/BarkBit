@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>/home/greg/OneDrive/Gregus Archetechtus/1-BarkBit/pcb/barkbit/barkbit.sch</source>
+    <date>Sat 04 Jul 2020 09:05:48 AM EDT</date>
+    <tool>Eeschema 5.1.6</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>barkbit.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="U2">
+      <value>MDBT42Q</value>
+      <footprint>barkbit:RAYTAC_MDBT42</footprint>
+      <datasheet>https://statics3.seeedstudio.com/assets/file/bazaar/product/MDBT42Q-Version_B.pdf</datasheet>
+      <libsource lib="MDBT42Q" part="MDBT42Q" description="MDBT42Q bluetooth low energy(BLE)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EEFDFBC</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>MX25R6435FM2IH0</value>
+      <footprint>Package_SO:SOIC-8_5.23x5.23mm_P1.27mm</footprint>
+      <datasheet>http://www.macronix.com/Lists/Datasheet/Attachments/7534/MX25R3235F,%20Wide%20Range,%2032Mb,%20v1.6.pdf</datasheet>
+      <libsource lib="Memory_Flash" part="MX25R3235FM1xx0" description="32-Mbit, Wide Range Voltage SPI Serial Flash Memory, SOP-8"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF01A4F</tstamp>
+    </comp>
+    <comp ref="U3">
+      <value>TLV61225</value>
+      <footprint>Package_TO_SOT_SMD:SOT-363_SC-70-6</footprint>
+      <libsource lib="barkbit" part="TLV61225" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF035C4</tstamp>
+    </comp>
+    <comp ref="U4">
+      <value>MMA8451Q</value>
+      <footprint>barkbit:MMA845X_QFN_16MM</footprint>
+      <libsource lib="barkbit" part="MMA8451Q" description="3-axis, 14-bit/8-bit digital accelerometer"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF084C8</tstamp>
+    </comp>
+    <comp ref="L1">
+      <value>15nH</value>
+      <footprint>Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="L_Small" description="Inductor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF1418A</tstamp>
+    </comp>
+    <comp ref="L3">
+      <value>10uH</value>
+      <footprint>Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="L_Small" description="Inductor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF14ADB</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>1uF</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF15A8B</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>4.7k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF253EB</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>4.7k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF259CA</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>0.1uf</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF2E92A</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>10uF</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF433FC</tstamp>
+    </comp>
+    <comp ref="L2">
+      <value>4.7uH</value>
+      <footprint>Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="L_Small" description="Inductor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF4E3B0</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>10uF</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF516DC</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>4.7uf</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF2D0A7</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>BATT</value>
+      <footprint>barkbit:Wire_1x02_P1.27mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector" part="Conn_01x02_Female" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF608BB</tstamp>
+    </comp>
+    <comp ref="C8">
+      <value>47uf</value>
+      <footprint>Capacitor_Tantalum_SMD:CP_EIA-2012-12_Kemet-R_Pad1.30x1.05mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="CP_Small" description="Polarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF34F0E</tstamp>
+    </comp>
+    <comp ref="C9">
+      <value>10uF</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF6624C</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>4.7uf</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF32A75</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>PRG</value>
+      <footprint>barkbit:Wire_1x04_P1.27mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector" part="Conn_01x04_Female" description="Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5EF1DA43</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="Conn_01x02_Female">
+      <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x02_Female</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Conn_01x04_Female">
+      <description>Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04_Female</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="CP_Small">
+      <description>Polarized capacitor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>CP_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C_Small">
+      <description>Unpolarized capacitor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="L_Small">
+      <description>Inductor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Choke_*</fp>
+        <fp>*Coil*</fp>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R_Small">
+      <description>Resistor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MDBT42Q" part="MDBT42Q">
+      <description>MDBT42Q bluetooth low energy(BLE)</description>
+      <docs>https://statics3.seeedstudio.com/assets/file/bazaar/product/MDBT42Q-Version_B.pdf</docs>
+      <footprints>
+        <fp>MDBT42Q</fp>
+        <fp>DIP*W10.9mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MDBT42Q</field>
+        <field name="Footprint">MDBT42Q:MDBT42Q</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="P0.25" type="BiDi"/>
+        <pin num="3" name="P0.26" type="BiDi"/>
+        <pin num="4" name="P0.27" type="BiDi"/>
+        <pin num="5" name="P0.28" type="BiDi"/>
+        <pin num="6" name="P0.29" type="BiDi"/>
+        <pin num="7" name="P0.30" type="BiDi"/>
+        <pin num="8" name="P0.31" type="BiDi"/>
+        <pin num="9" name="DEC4" type="power_in"/>
+        <pin num="10" name="DCC" type="power_out"/>
+        <pin num="11" name="VDD" type="power_in"/>
+        <pin num="12" name="GND" type="power_in"/>
+        <pin num="13" name="P0.00" type="BiDi"/>
+        <pin num="14" name="P0.01" type="BiDi"/>
+        <pin num="15" name="P0.02" type="BiDi"/>
+        <pin num="16" name="P0.03" type="BiDi"/>
+        <pin num="17" name="P0.04" type="BiDi"/>
+        <pin num="18" name="P0.05" type="BiDi"/>
+        <pin num="19" name="P0.06" type="BiDi"/>
+        <pin num="20" name="P0.07" type="BiDi"/>
+        <pin num="21" name="P0.08" type="BiDi"/>
+        <pin num="22" name="P0.09" type="BiDi"/>
+        <pin num="23" name="P0.10" type="BiDi"/>
+        <pin num="24" name="GND" type="power_in"/>
+        <pin num="25" name="P0.11" type="BiDi"/>
+        <pin num="26" name="P0.12" type="BiDi"/>
+        <pin num="27" name="P0.13" type="BiDi"/>
+        <pin num="28" name="P0.14" type="BiDi"/>
+        <pin num="29" name="P0.15" type="BiDi"/>
+        <pin num="30" name="P0.16" type="BiDi"/>
+        <pin num="31" name="P0.17" type="BiDi"/>
+        <pin num="32" name="P0.18" type="BiDi"/>
+        <pin num="33" name="P0.19" type="BiDi"/>
+        <pin num="34" name="P0.20" type="BiDi"/>
+        <pin num="35" name="P0.21" type="BiDi"/>
+        <pin num="36" name="SWDCLK" type="input"/>
+        <pin num="37" name="SWDIO" type="BiDi"/>
+        <pin num="38" name="P0.22" type="BiDi"/>
+        <pin num="39" name="GND" type="power_in"/>
+        <pin num="40" name="P0.24" type="BiDi"/>
+        <pin num="41" name="P0.23" type="BiDi"/>
+      </pins>
+    </libpart>
+    <libpart lib="Memory_Flash" part="MX25R3235FM1xx0">
+      <description>32-Mbit, Wide Range Voltage SPI Serial Flash Memory, SOP-8</description>
+      <docs>http://www.macronix.com/Lists/Datasheet/Attachments/7534/MX25R3235F,%20Wide%20Range,%2032Mb,%20v1.6.pdf</docs>
+      <footprints>
+        <fp>SOP*3.9x4.9mm*P1.27mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MX25R3235FM1xx0</field>
+        <field name="Footprint">Package_SO:SOP-8_3.9x4.9mm_P1.27mm</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~CS" type="input"/>
+        <pin num="2" name="SO/SIO1" type="BiDi"/>
+        <pin num="3" name="~WP~/SIO2" type="BiDi"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="SI/SIO0" type="BiDi"/>
+        <pin num="6" name="SCLK" type="input"/>
+        <pin num="7" name="~RESET~/SIO3" type="BiDi"/>
+        <pin num="8" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="barkbit" part="MMA8451Q">
+      <description>3-axis, 14-bit/8-bit digital accelerometer</description>
+      <footprints>
+        <fp>QFN</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MMA8451Q</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDDIO" type="power_in"/>
+        <pin num="2" name="BYP" type="input"/>
+        <pin num="3" name="DNC" type="NotConnected"/>
+        <pin num="4" name="SCL" type="input"/>
+        <pin num="5" name="GND" type="power_in"/>
+        <pin num="6" name="SDA" type="input"/>
+        <pin num="7" name="SA0" type="input"/>
+        <pin num="8" name="NC" type="NotConnected"/>
+        <pin num="9" name="INT2" type="output"/>
+        <pin num="10" name="GND" type="passive"/>
+        <pin num="11" name="INT1" type="output"/>
+        <pin num="12" name="GND" type="passive"/>
+        <pin num="13" name="NC" type="NotConnected"/>
+        <pin num="14" name="VDD" type="power_in"/>
+        <pin num="15" name="NC" type="NotConnected"/>
+        <pin num="16" name="NC" type="NotConnected"/>
+      </pins>
+    </libpart>
+    <libpart lib="barkbit" part="TLV61225">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TLV61225</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VIN" type="power_in"/>
+        <pin num="2" name="FB" type="input"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="VOUT" type="power_out"/>
+        <pin num="5" name="L" type="input"/>
+        <pin num="6" name="EN" type="input"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>/usr/share/kicad/library/Connector.lib</uri>
+    </library>
+    <library logical="Device">
+      <uri>/usr/share/kicad/library/Device.lib</uri>
+    </library>
+    <library logical="MDBT42Q">
+      <uri>/home/greg/OneDrive/Gregus Archetechtus/1-BarkBit/pcb/barkbit/libs/MDBT42Q.lib</uri>
+    </library>
+    <library logical="Memory_Flash">
+      <uri>/usr/share/kicad/library/Memory_Flash.lib</uri>
+    </library>
+    <library logical="barkbit">
+      <uri>/home/greg/OneDrive/Gregus Archetechtus/1-BarkBit/pcb/barkbit/libs/barkbit.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(L2-Pad1)">
+      <node ref="L2" pin="1"/>
+      <node ref="U3" pin="5"/>
+    </net>
+    <net code="2" name="Net-(U2-Pad2)">
+      <node ref="U2" pin="2"/>
+    </net>
+    <net code="3" name="Net-(U2-Pad40)">
+      <node ref="U2" pin="40"/>
+    </net>
+    <net code="4" name="Net-(U2-Pad41)">
+      <node ref="U2" pin="41"/>
+    </net>
+    <net code="5" name="Net-(U2-Pad38)">
+      <node ref="U2" pin="38"/>
+    </net>
+    <net code="6" name="Net-(U2-Pad7)">
+      <node ref="U2" pin="7"/>
+    </net>
+    <net code="7" name="Net-(U2-Pad6)">
+      <node ref="U2" pin="6"/>
+    </net>
+    <net code="8" name="Net-(U2-Pad5)">
+      <node ref="U2" pin="5"/>
+    </net>
+    <net code="9" name="Net-(U2-Pad4)">
+      <node ref="U2" pin="4"/>
+    </net>
+    <net code="10" name="Net-(U2-Pad3)">
+      <node ref="U2" pin="3"/>
+    </net>
+    <net code="11" name="Net-(C6-Pad1)">
+      <node ref="C6" pin="1"/>
+      <node ref="U4" pin="2"/>
+    </net>
+    <net code="12" name="+3V3">
+      <node ref="U2" pin="11"/>
+      <node ref="C9" pin="2"/>
+      <node ref="C5" pin="1"/>
+      <node ref="J2" pin="1"/>
+      <node ref="U3" pin="2"/>
+      <node ref="U3" pin="4"/>
+      <node ref="U4" pin="1"/>
+      <node ref="U4" pin="14"/>
+      <node ref="U1" pin="8"/>
+      <node ref="R2" pin="2"/>
+      <node ref="U1" pin="3"/>
+      <node ref="U1" pin="7"/>
+      <node ref="C7" pin="2"/>
+      <node ref="C3" pin="1"/>
+      <node ref="R1" pin="2"/>
+    </net>
+    <net code="13" name="GND">
+      <node ref="U1" pin="4"/>
+      <node ref="C8" pin="2"/>
+      <node ref="C6" pin="2"/>
+      <node ref="J1" pin="2"/>
+      <node ref="U2" pin="12"/>
+      <node ref="C1" pin="2"/>
+      <node ref="U2" pin="24"/>
+      <node ref="U3" pin="3"/>
+      <node ref="U2" pin="1"/>
+      <node ref="U2" pin="39"/>
+      <node ref="U4" pin="12"/>
+      <node ref="U4" pin="10"/>
+      <node ref="C3" pin="2"/>
+      <node ref="C7" pin="1"/>
+      <node ref="C2" pin="1"/>
+      <node ref="U4" pin="7"/>
+      <node ref="U4" pin="5"/>
+      <node ref="C9" pin="1"/>
+      <node ref="C5" pin="2"/>
+      <node ref="J2" pin="2"/>
+    </net>
+    <net code="14" name="Net-(U2-Pad35)">
+      <node ref="U2" pin="35"/>
+    </net>
+    <net code="15" name="Net-(U2-Pad25)">
+      <node ref="U2" pin="25"/>
+    </net>
+    <net code="16" name="Net-(U2-Pad26)">
+      <node ref="U2" pin="26"/>
+    </net>
+    <net code="17" name="Net-(U2-Pad27)">
+      <node ref="U2" pin="27"/>
+    </net>
+    <net code="18" name="Net-(U2-Pad28)">
+      <node ref="U2" pin="28"/>
+    </net>
+    <net code="19" name="Net-(U2-Pad32)">
+      <node ref="U2" pin="32"/>
+    </net>
+    <net code="20" name="Net-(U2-Pad33)">
+      <node ref="U2" pin="33"/>
+    </net>
+    <net code="21" name="Net-(U2-Pad34)">
+      <node ref="U2" pin="34"/>
+    </net>
+    <net code="22" name="Net-(J2-Pad3)">
+      <node ref="U2" pin="36"/>
+      <node ref="J2" pin="3"/>
+    </net>
+    <net code="23" name="Net-(J2-Pad4)">
+      <node ref="J2" pin="4"/>
+      <node ref="U2" pin="37"/>
+    </net>
+    <net code="24" name="Net-(U2-Pad8)">
+      <node ref="U2" pin="8"/>
+    </net>
+    <net code="25" name="Net-(U2-Pad31)">
+      <node ref="U2" pin="31"/>
+    </net>
+    <net code="26" name="Net-(U2-Pad30)">
+      <node ref="U2" pin="30"/>
+    </net>
+    <net code="27" name="Net-(U2-Pad29)">
+      <node ref="U2" pin="29"/>
+    </net>
+    <net code="28" name="Net-(U2-Pad19)">
+      <node ref="U2" pin="19"/>
+    </net>
+    <net code="29" name="Net-(U2-Pad18)">
+      <node ref="U2" pin="18"/>
+    </net>
+    <net code="30" name="Net-(U2-Pad17)">
+      <node ref="U2" pin="17"/>
+    </net>
+    <net code="31" name="+3V0">
+      <node ref="L2" pin="2"/>
+      <node ref="J1" pin="1"/>
+      <node ref="C8" pin="1"/>
+      <node ref="C2" pin="2"/>
+      <node ref="U3" pin="6"/>
+      <node ref="U3" pin="1"/>
+    </net>
+    <net code="32" name="/SPI_SCK">
+      <node ref="U1" pin="6"/>
+      <node ref="U2" pin="23"/>
+    </net>
+    <net code="33" name="/SPI_MOSI">
+      <node ref="U2" pin="22"/>
+      <node ref="U1" pin="5"/>
+    </net>
+    <net code="34" name="/SPI_MISO">
+      <node ref="U1" pin="2"/>
+      <node ref="U2" pin="21"/>
+    </net>
+    <net code="35" name="/FLASH_CS">
+      <node ref="U1" pin="1"/>
+      <node ref="U2" pin="20"/>
+    </net>
+    <net code="36" name="Net-(U4-Pad3)">
+      <node ref="U4" pin="3"/>
+    </net>
+    <net code="37" name="Net-(U4-Pad16)">
+      <node ref="U4" pin="16"/>
+    </net>
+    <net code="38" name="Net-(U4-Pad15)">
+      <node ref="U4" pin="15"/>
+    </net>
+    <net code="39" name="Net-(U4-Pad13)">
+      <node ref="U4" pin="13"/>
+    </net>
+    <net code="40" name="/MMA_INT1">
+      <node ref="U4" pin="11"/>
+      <node ref="U2" pin="15"/>
+    </net>
+    <net code="41" name="/MMA_INT2">
+      <node ref="U4" pin="9"/>
+      <node ref="U2" pin="16"/>
+    </net>
+    <net code="42" name="/I2C_SCL">
+      <node ref="U2" pin="14"/>
+      <node ref="U4" pin="4"/>
+      <node ref="R1" pin="1"/>
+    </net>
+    <net code="43" name="/I2C_SDA">
+      <node ref="U4" pin="6"/>
+      <node ref="U2" pin="13"/>
+      <node ref="R2" pin="1"/>
+    </net>
+    <net code="44" name="Net-(L3-Pad1)">
+      <node ref="U2" pin="10"/>
+      <node ref="L3" pin="1"/>
+    </net>
+    <net code="45" name="Net-(C1-Pad1)">
+      <node ref="C1" pin="1"/>
+      <node ref="L1" pin="2"/>
+      <node ref="U2" pin="9"/>
+    </net>
+    <net code="46" name="Net-(L1-Pad1)">
+      <node ref="L3" pin="2"/>
+      <node ref="L1" pin="1"/>
+    </net>
+    <net code="47" name="Net-(U4-Pad8)">
+      <node ref="U4" pin="8"/>
+    </net>
+  </nets>
+</export>
