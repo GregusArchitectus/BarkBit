@@ -589,4 +589,8 @@ NoConn ~ 5200 3700
 NoConn ~ 5200 3600
 Wire Wire Line
 	5100 1100 5100 1000
+Text Label 7100 2500 0    50   ~ 0
+SWDIO
+Text Label 7000 2600 0    50   ~ 0
+SWDCLK
 $EndSCHEMATC

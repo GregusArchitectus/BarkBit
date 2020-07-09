@@ -8,3 +8,6 @@ gerber/*
 .~lock*
 fp-info-cache
 secure.h
+
+build
+.idea
