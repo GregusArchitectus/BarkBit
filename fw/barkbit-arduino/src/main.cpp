@@ -3,8 +3,8 @@
 #include <Arduino.h>
 #include <SEGGER_RTT.h>
 
-#include "bluefruit.h"
 #include "barkbit.h"
+#include "bluefruit.h"
 
 #define rwrite_string SEGGER_RTT_WriteString
 #define rprintf SEGGER_RTT_printf
@@ -14,21 +14,39 @@
 #define PIN_FLASH_CS 7
 
 Adafruit_MMA8451 mma = Adafruit_MMA8451();
-SoftwareTimer mma_read;
+SoftwareTimer ble_push;
 
 BLEDis bledis;
-//BLEUart bleuart;
+// BLEUart bleuart;
+
+uint32_t steps = 0;
+bool update = false;
+
+void setup_bb_svc() {
+  bb_service.begin();
+  bb_steps.begin();
+  bb_steps.setUserDescriptor("Steps");
+  bb_steps.setProperties(CHR_PROPS_READ | CHR_PROPS_NOTIFY);
+  bb_steps.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
+  bb_steps.setPresentationFormatDescriptor(BLE_GATT_CPF_FORMAT_UINT32, 1,
+                                           UUID16_UNIT_UNITLESS);
+  bb_steps.setFixedLen(sizeof(steps));
+  bb_steps.begin();
+  bb_steps.write32(steps);
+}
 
 void init_ble() {
   Bluefruit.configPrphBandwidth(BANDWIDTH_LOW);
   Bluefruit.begin();
   Bluefruit.setTxPower(-12);  // TODO: tune this
   Bluefruit.setName("BarkBit");
-  //bleuart.begin();
+  // bleuart.begin();
 
   bledis.setManufacturer("Gregus Archetectus");
   bledis.setModel("BarkBit 1");
   bledis.begin();
+
+  setup_bb_svc();
 
   Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
   Bluefruit.Advertising.addTxPower();
@@ -59,7 +77,17 @@ void log() {
 }
 
 void trans() {
+  update = true;
   rwrite_string(0, "-------------------------------------------STEP-----\n");
+  steps++;
+}
+
+void ble_push_cb(TimerHandle_t t) {
+  if (update) {
+    update = false;
+    rwrite_string(0, "ble_push_cb\n");
+    bb_steps.notify32(steps);
+  }
 }
 
 void setup() {
@@ -95,13 +123,13 @@ void setup() {
   // pinMode(PIN_MMA_INT1, INPUT_PULLUP);
   // attachInterrupt(digitalPinToInterrupt(PIN_MMA_INT1), log, FALLING);
 
+  init_ble();
+
   pinMode(PIN_MMA_INT2, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(PIN_MMA_INT2), trans, FALLING);
 
-  init_ble();
-
-  //  mma_read.begin(1000 / 12, read_sensor);
-  //  mma_read.start();
+  ble_push.begin(5000, ble_push_cb);
+  ble_push.start();
 
   suspendLoop();
   waitForEvent();
