@@ -54,10 +54,15 @@
 &i2c0 {
 	compatible = "nordic,nrf-twi";
 	status = "okay";
-	// sda-pin = <2>;
-	// scl-pin = <3>;
-	sda-pin = <26>;
-	scl-pin = <27>;
+	//
+	// 4, 5, 6, 7
+	sda-pin = <0>;
+	scl-pin = <1>;
+	
+	//sda-pin = <16>;
+	//scl-pin = <17>;
+	//sda-pin = <26>;
+	//scl-pin = <27>;
 	/*mma8451q: mma8451q@1c {
 		compatible = "nxp,fxos8700","nxp,mma8451q";
 		reg = <0x1c>;
