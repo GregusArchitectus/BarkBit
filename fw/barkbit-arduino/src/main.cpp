@@ -5,6 +5,10 @@
 
 #include "barkbit.h"
 #include "bluefruit.h"
+#include <Adafruit_LittleFS.h>
+#include <InternalFileSystem.h>
+
+using namespace Adafruit_LittleFS_Namespace;
 
 #define rwrite_string SEGGER_RTT_WriteString
 #define rprintf SEGGER_RTT_printf
@@ -24,11 +28,14 @@ transient_cfg_t transient_cfg{
 uint32_t steps = 0;
 bool update = false;
 
+void save_cfg();
+
 void threshold_write_cb(uint16_t conn_hdl, BLECharacteristic *chr, uint8_t *data, uint16_t len) {
   //
   if (*data != transient_cfg.threshold) {
     transient_cfg.threshold = *data;
     mma.setTransientConfiguration(&transient_cfg);
+    save_cfg();
     rprintf(0, "threshold_write_cb: %d\n", *data);
   }
 }
@@ -37,6 +44,7 @@ void debounce_write_cb(uint16_t conn_hdl, BLECharacteristic *chr, uint8_t *data,
   if (*data != transient_cfg.debounce_count) {
     transient_cfg.debounce_count = *data;
     mma.setTransientConfiguration(&transient_cfg);
+    save_cfg();
     rprintf(0, "debounce_write_cb: %d\n", *data);
   }
 }
@@ -73,7 +81,7 @@ void setup_bb_svc() {
 void init_ble() {
   Bluefruit.configPrphBandwidth(BANDWIDTH_LOW);
   Bluefruit.begin();
-  Bluefruit.setTxPower(-12);  // TODO: tune this
+  Bluefruit.setTxPower(0);  // TODO: tune this
   Bluefruit.setName("BarkBit");
   // bleuart.begin();
 
@@ -88,15 +96,6 @@ void init_ble() {
   Bluefruit.Advertising.addService(bb_service);
   Bluefruit.ScanResponse.addName();
 
-  /* Start Advertising
-   * - Enable auto advertising if disconnected
-   * - Interval:  fast mode = 20 ms, slow mode = 152.5 ms
-   * - Timeout for fast mode is 30 seconds
-   * - Start(timeout) with timeout = 0 will advertise forever (until connected)
-   *
-   * For recommended advertising interval
-   * https://developer.apple.com/library/content/qa/qa1931/_index.html
-   */
   Bluefruit.Advertising.restartOnDisconnect(true);
   Bluefruit.Advertising.setInterval(200 / .625, 1000 / .625);
   Bluefruit.Advertising.setFastTimeout(5);  // number of seconds in fast mode
@@ -126,23 +125,42 @@ void ble_push_cb(TimerHandle_t t) {
   }
 }
 
+const uint16_t cfg_size = 2;
+const char * cfg_filename = "/bb.cfg";
+void save_cfg() {
+  File cfg_file(InternalFS);
+  cfg_file.open(cfg_filename, FILE_O_WRITE);
+  cfg_file.seek(0);
+  cfg_file.write(transient_cfg.threshold);
+  cfg_file.write(transient_cfg.debounce_count);
+  cfg_file.close();
+}
+
+void load_cfg() {
+  File cfg_file(InternalFS);
+  cfg_file.open(cfg_filename, FILE_O_READ);
+  if (!cfg_file || cfg_file.size() != cfg_size) {
+    if(cfg_file)
+    {
+      rprintf(0, "Invalid config size of %d. Resetting.\n", cfg_file.size());
+      InternalFS.remove(cfg_filename);
+    } else {
+      rwrite_string(0, "Config file not found. Resetting.\n");
+    }
+    save_cfg();
+  } else {
+    cfg_file.readBytes(&transient_cfg.threshold, 1);
+    cfg_file.readBytes(&transient_cfg.debounce_count, 1);
+    cfg_file.close();
+  }
+}
+
 void setup() {
   pinMode(PIN_FLASH_CS, OUTPUT);
   digitalWrite(PIN_FLASH_CS, HIGH);
 
-  // flash.begin();
-  // flash.powerDown();
-
-  // SPI.begin();
-  // SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-  // digitalWrite(PIN_FLASH_CS, LOW);
-
-  // SPI.transfer(0x9f);
-  // rprintf(0, "FLASHID: %x:%x:%x", SPI.transfer(0), SPI.transfer(0),
-  //        SPI.transfer(0));
-  // digitalWrite(PIN_FLASH_CS, HIGH);
-
-  // SPI.endTransaction();
+  InternalFS.begin();
+  load_cfg();
 
   sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
 
@@ -150,7 +168,7 @@ void setup() {
     rwrite_string(0, "MMA8451: couldnt start\n");
     delay(1000);
   }
-  rwrite_string(0, "MMA8451 found!\n");
+  rprintf(0, "MMA8451 initialized with t:%d, d:%d!\n", transient_cfg.threshold, transient_cfg.debounce_count);
 
   Serial.end();
 
