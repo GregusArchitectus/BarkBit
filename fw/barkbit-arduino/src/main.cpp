@@ -17,10 +17,29 @@ Adafruit_MMA8451 mma = Adafruit_MMA8451();
 SoftwareTimer ble_push;
 
 BLEDis bledis;
-// BLEUart bleuart;
 
+transient_cfg_t transient_cfg{
+    .x_enabled = true, .y_enabled = true, .z_enabled = true, .debounce_count = 1, .threshold = 10
+};
 uint32_t steps = 0;
 bool update = false;
+
+void threshold_write_cb(uint16_t conn_hdl, BLECharacteristic *chr, uint8_t *data, uint16_t len) {
+  //
+  if (*data != transient_cfg.threshold) {
+    transient_cfg.threshold = *data;
+    mma.setTransientConfiguration(&transient_cfg);
+    rprintf(0, "threshold_write_cb: %d\n", *data);
+  }
+}
+
+void debounce_write_cb(uint16_t conn_hdl, BLECharacteristic *chr, uint8_t *data, uint16_t len) {
+  if (*data != transient_cfg.debounce_count) {
+    transient_cfg.debounce_count = *data;
+    mma.setTransientConfiguration(&transient_cfg);
+    rprintf(0, "debounce_write_cb: %d\n", *data);
+  }
+}
 
 void setup_bb_svc() {
   bb_service.begin();
@@ -28,11 +47,27 @@ void setup_bb_svc() {
   bb_steps.setUserDescriptor("Steps");
   bb_steps.setProperties(CHR_PROPS_READ | CHR_PROPS_NOTIFY);
   bb_steps.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
-  bb_steps.setPresentationFormatDescriptor(BLE_GATT_CPF_FORMAT_UINT32, 1,
-                                           UUID16_UNIT_UNITLESS);
   bb_steps.setFixedLen(sizeof(steps));
   bb_steps.begin();
   bb_steps.write32(steps);
+
+  bb_threshold.begin();
+  bb_threshold.setUserDescriptor("Threshold");
+  bb_threshold.setProperties(CHR_PROPS_READ | CHR_PROPS_WRITE);
+  bb_threshold.setPermission(SECMODE_OPEN, SECMODE_OPEN);
+  bb_threshold.setFixedLen(1);
+  bb_threshold.setWriteCallback(threshold_write_cb);
+  bb_threshold.begin();
+  bb_threshold.write8(transient_cfg.threshold);
+
+  bb_debounce.begin();
+  bb_debounce.setUserDescriptor("Debounce");
+  bb_debounce.setProperties(CHR_PROPS_READ | CHR_PROPS_WRITE);
+  bb_debounce.setPermission(SECMODE_OPEN, SECMODE_OPEN);
+  bb_debounce.setFixedLen(1);
+  bb_debounce.setWriteCallback(debounce_write_cb);
+  bb_debounce.begin();
+  bb_debounce.write8(transient_cfg.debounce_count);
 }
 
 void init_ble() {
@@ -79,6 +114,7 @@ void log() {
 void trans() {
   update = true;
   rwrite_string(0, "-------------------------------------------STEP-----\n");
+  log();
   steps++;
 }
 
@@ -110,7 +146,7 @@ void setup() {
 
   sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
 
-  while (!mma.begin(0x1C)) {
+  while (!mma.begin(0x1C, &transient_cfg)) {
     rwrite_string(0, "MMA8451: couldnt start\n");
     delay(1000);
   }

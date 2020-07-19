@@ -32,6 +32,11 @@
 #include <Adafruit_MMA8451.h>
 #include <Wire.h>
 
+#include <SEGGER_RTT.h>
+
+#define rwrite_string SEGGER_RTT_WriteString
+#define rprintf SEGGER_RTT_printf
+
 /**************************************************************************/
 /*!
     @brief  Abstract away platform differences in Arduino wire library
@@ -47,7 +52,7 @@ static inline uint8_t i2cread(void) {
 
 static inline void i2cwrite(uint8_t x) {
 #if ARDUINO >= 100
-  Wire.write((uint8_t)x);
+  Wire.write((uint8_t) x);
 #else
   Wire.send(x);
 #endif
@@ -60,8 +65,8 @@ static inline void i2cwrite(uint8_t x) {
 /**************************************************************************/
 void Adafruit_MMA8451::writeRegister8(uint8_t reg, uint8_t value) {
   Wire.beginTransmission(_i2caddr);
-  i2cwrite((uint8_t)reg);
-  i2cwrite((uint8_t)(value));
+  i2cwrite((uint8_t) reg);
+  i2cwrite((uint8_t) (value));
   Wire.endTransmission();
 }
 
@@ -101,7 +106,7 @@ Adafruit_MMA8451::Adafruit_MMA8451(int32_t sensorID) { _sensorID = sensorID; }
     @brief  Setups the HW (reads coefficients values, etc.)
 */
 /**************************************************************************/
-bool Adafruit_MMA8451::begin(uint8_t i2caddr) {
+bool Adafruit_MMA8451::begin(uint8_t i2caddr, const transient_cfg_t *transient_cfg) {
   Wire.begin();
   _i2caddr = i2caddr;
 
@@ -115,22 +120,24 @@ bool Adafruit_MMA8451::begin(uint8_t i2caddr) {
 
   writeRegister8(MMA8451_REG_CTRL_REG2, 0x40);  // reset
 
-  while (readRegister8(MMA8451_REG_CTRL_REG2) & 0x40)
-    ;
+  while (readRegister8(MMA8451_REG_CTRL_REG2) & 0x40);
 
   writeRegister8(MMA8451_REG_XYZ_DATA_CFG, 0 << 4 |  // high pass filter
-                                               MMA8451_RANGE_2_G);
-
-  writeRegister8(MMA8451_REG_TRANSIENT_CFG,
-                 0b1110);  // ZYX axis, do not bypass HPF
-  writeRegister8(MMA8451_REG_TRANSIENT_THS, 10);
-  writeRegister8(MMA8451_REG_TRANSIENT_COUNT, 1);
-
+      MMA8451_RANGE_2_G);
   writeRegister8(MMA8451_REG_HP_FILTER_CUTOFF, 0b00);
 
+  if (transient_cfg != nullptr) {
+    writeRegister8(MMA8451_REG_TRANSIENT_CFG, transient_cfg->z_enabled << 3 |
+        transient_cfg->y_enabled << 2 |
+        transient_cfg->x_enabled << 1);
+    writeRegister8(MMA8451_REG_TRANSIENT_THS, transient_cfg->threshold & ~(1 << 7));
+    writeRegister8(MMA8451_REG_TRANSIENT_THS, 10);
+    writeRegister8(MMA8451_REG_TRANSIENT_COUNT, transient_cfg->debounce_count);
+  }
+
   writeRegister8(MMA8451_REG_CTRL_REG2,
-                 //MMA8451_SLPE_ENABLE |         // enable auto-sleep mode
-                     MMA8451_LOW_POWER >> 3 |  // sleep mode oversampling
+      //MMA8451_SLPE_ENABLE |         // enable auto-sleep mode
+                 MMA8451_LOW_POWER >> 3u |  // sleep mode oversampling
                      MMA8451_LOW_POWER);       // active mode oversampling
 
   // DRDY on INT1
@@ -141,8 +148,8 @@ bool Adafruit_MMA8451::begin(uint8_t i2caddr) {
   // writeRegister8(MMA8451_REG_PL_CFG, 0x40);
 
   writeRegister8(MMA8451_REG_CTRL_REG1,
-                 (MMA8451_SLEEP_DATARATE_12_5_HZ << 6) |
-                     (MMA8451_DATARATE_12_5_HZ << 3) |
+                 (MMA8451_SLEEP_DATARATE_12_5_HZ << 6u) |
+                     (MMA8451_DATARATE_12_5_HZ << 3u) |
                      0b101);  // low noise, fast read, activate
 
   /*
@@ -154,6 +161,40 @@ bool Adafruit_MMA8451::begin(uint8_t i2caddr) {
   */
 
   return true;
+}
+
+void Adafruit_MMA8451::setTransientConfiguration(const transient_cfg_t *cfg) {
+  uint8_t reg1 = readRegister8(MMA8451_REG_CTRL_REG1);
+  writeRegister8(MMA8451_REG_CTRL_REG1, 0x00);  // deactivate
+
+  writeRegister8(MMA8451_REG_TRANSIENT_CFG,
+                 cfg->z_enabled << 3 |
+                     cfg->y_enabled << 2 |
+                     cfg->x_enabled << 1);
+  writeRegister8(MMA8451_REG_TRANSIENT_THS, cfg->threshold & ~(1 << 7));
+  writeRegister8(MMA8451_REG_TRANSIENT_COUNT, cfg->debounce_count);
+
+  writeRegister8(MMA8451_REG_CTRL_REG1, reg1 | 0x01);  // activate
+}
+
+void Adafruit_MMA8451::setTransientEventInterrupt(uint8_t num) {
+  uint8_t reg1 = readRegister8(MMA8451_REG_CTRL_REG1);
+  uint8_t reg4 = readRegister8(MMA8451_REG_CTRL_REG4);
+  uint8_t reg5 = readRegister8(MMA8451_REG_CTRL_REG5);
+
+  writeRegister8(MMA8451_REG_CTRL_REG1, 0x00);  // deactivate
+
+  if (num == 1) {
+    writeRegister8(MMA8451_REG_CTRL_REG4, reg4 | 1 << 5); // enable interrupt
+    writeRegister8(MMA8451_REG_CTRL_REG5, reg5 | 1 << 5); // set to int1
+  } else if (num == 2) {
+    writeRegister8(MMA8451_REG_CTRL_REG4, reg4 | 1 << 5);
+    writeRegister8(MMA8451_REG_CTRL_REG5, reg5 & ~(1 << 5)); // set to int2
+  } else {
+    writeRegister8(MMA8451_REG_CTRL_REG4, reg4 & ~(1 << 5)); // disable interrupt
+  }
+
+  writeRegister8(MMA8451_REG_CTRL_REG1, reg1 | 0x01);  // activate
 }
 
 void Adafruit_MMA8451::read(void) {
@@ -182,9 +223,9 @@ void Adafruit_MMA8451::read(void) {
   if (range == MMA8451_RANGE_4_G) divider = 2048;
   if (range == MMA8451_RANGE_2_G) divider = 4096;
 
-  x_g = (float)x / divider;
-  y_g = (float)y / divider;
-  z_g = (float)z / divider;
+  x_g = (float) x / divider;
+  y_g = (float) y / divider;
+  z_g = (float) z / divider;
 }
 
 /**************************************************************************/
@@ -216,7 +257,7 @@ void Adafruit_MMA8451::setRange(mma8451_range_t range) {
 /**************************************************************************/
 mma8451_range_t Adafruit_MMA8451::getRange(void) {
   /* Read the data format register to preserve bits */
-  return (mma8451_range_t)(readRegister8(MMA8451_REG_XYZ_DATA_CFG) & 0x03);
+  return (mma8451_range_t) (readRegister8(MMA8451_REG_XYZ_DATA_CFG) & 0x03);
 }
 
 /**************************************************************************/
@@ -238,8 +279,8 @@ void Adafruit_MMA8451::setDataRate(mma8451_dataRate_t dataRate) {
 */
 /**************************************************************************/
 mma8451_dataRate_t Adafruit_MMA8451::getDataRate(void) {
-  return (mma8451_dataRate_t)((readRegister8(MMA8451_REG_CTRL_REG1) >> 3) &
-                              MMA8451_DATARATE_MASK);
+  return (mma8451_dataRate_t) ((readRegister8(MMA8451_REG_CTRL_REG1) >> 3) &
+      MMA8451_DATARATE_MASK);
 }
 
 #ifdef USE_SENSOR

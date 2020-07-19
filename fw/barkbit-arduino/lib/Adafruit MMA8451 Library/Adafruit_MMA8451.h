@@ -96,6 +96,14 @@ typedef enum {
   MMA8451_LOW_POWER = 0b11,
 } mma8451_oversampling_modes_t;
 
+typedef struct {
+  bool x_enabled;
+  bool y_enabled;
+  bool z_enabled;
+  uint8_t debounce_count; // scales with ODR, see datasheet table 43.
+  uint8_t threshold; // 7-bit, 0.063g per count
+} transient_cfg_t;
+
 #define MMA8451_SLPE_ENABLE 0b100
 #define MMA8451_SLPE_DISABLE 0b000
 
@@ -117,9 +125,10 @@ class Adafruit_MMA8451
   /*!
    * @brief Connects with the MMA8451
    * @param addr Address of the MMA8451
+   * @param transient_cfg Configuration for transient event detection.
    * @return Returns a boolean
    */
-  bool begin(uint8_t addr = MMA8451_DEFAULT_ADDRESS);
+  bool begin(uint8_t addr = MMA8451_DEFAULT_ADDRESS, const transient_cfg_t *transient_cfg = nullptr);
 
   void read();  //!< @brief Reads data from the sensor
 
@@ -146,6 +155,9 @@ class Adafruit_MMA8451
    */
   void getSensor(sensor_t *sensor);
 #endif
+
+  void setTransientConfiguration(const transient_cfg_t *cfg);
+  void setTransientEventInterrupt(uint8_t num);
 
   uint8_t getOrientation(void);  //!< @return 3 axis tuple
 
