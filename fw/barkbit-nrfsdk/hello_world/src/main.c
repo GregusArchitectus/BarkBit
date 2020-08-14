@@ -1,30 +1,24 @@
-/*
- * Copyright (c) 2012-2014 Wind River Systems, Inc.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #include <zephyr.h>
 #include <drivers/sensor.h>
 #include <sys/printk.h>
 #include <stdio.h>
 #include <drivers/i2c.h>
 #include <logging/log.h>
-//#include <drivers/gpio.h>
+#include <drivers/gpio.h>
 
 //#define MMA8451Q DT_NODELABEL(mma8451q)
 #define I2C_DEV DT_LABEL(DT_ALIAS(i2c_0))
-//#define GPIO DT_LABEL(DT_ALIAS(gpio_0))
+#define GPIO DT_LABEL(DT_ALIAS(gpio_0))
 void main(void)
 {
 	printk("Hello from MAIN! \n");
-	struct sensor_value accel[3];
-	// struct device *gpio = device_get_binding(GPIO);
-	// if (gpio == NULL)
-	// {
-	// 	printk("Could not get gpio device\n");
-	// 	return;
-	// }
+	//struct sensor_value accel[3];
+	struct device *gpio = device_get_binding(GPIO);
+	if (gpio == NULL)
+	{
+		printk("Could not get gpio device\n");
+		return;
+	}
 
 	gpio_pin_configure(gpio, 0, GPIO_INPUT | GPIO_PULL_UP);
 	gpio_pin_configure(gpio, 1, GPIO_INPUT | GPIO_PULL_UP);
@@ -58,17 +52,16 @@ void main(void)
 	}
 
 	printk("Gah.\n");
-	uint8_t buf[] = {42};
-	int ret = i2c_write(i2c, buf, sizeof(buf), 0x1c);
-	if (ret > 0)
-	{
-		printk("found the thing");
-	}
-	else
-	{
-		printk("didn't found the thing");
-	}
+#define MMA8451_REG_WHOAMI 0x0D
 
+	uint8_t write[] = {MMA8451_REG_WHOAMI};
+	uint8_t buf[] = {0};
+	int ret = i2c_write_read(i2c, 0x1c, write, 1, buf, 1);
+	if (ret == 0)
+	{
+		printk("Write succeeded.\n");
+		printk("Response: [%01x].\n", *buf);
+	}
 	return;
 
 	struct sensor_value attr = {

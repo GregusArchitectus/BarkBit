@@ -1,5 +1,4 @@
 #include <Adafruit_MMA8451.h>
-#include <Adafruit_Sensor.h>
 #include <Arduino.h>
 #include <SEGGER_RTT.h>
 
@@ -31,7 +30,6 @@ bool update = false;
 void save_cfg();
 
 void threshold_write_cb(uint16_t conn_hdl, BLECharacteristic *chr, uint8_t *data, uint16_t len) {
-  //
   if (*data != transient_cfg.threshold) {
     transient_cfg.threshold = *data;
     mma.setTransientConfiguration(&transient_cfg);
@@ -51,7 +49,7 @@ void debounce_write_cb(uint16_t conn_hdl, BLECharacteristic *chr, uint8_t *data,
 
 void setup_bb_svc() {
   bb_service.begin();
-  bb_steps.begin();
+
   bb_steps.setUserDescriptor("Steps");
   bb_steps.setProperties(CHR_PROPS_READ | CHR_PROPS_NOTIFY);
   bb_steps.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
@@ -59,7 +57,6 @@ void setup_bb_svc() {
   bb_steps.begin();
   bb_steps.write32(steps);
 
-  bb_threshold.begin();
   bb_threshold.setUserDescriptor("Threshold");
   bb_threshold.setProperties(CHR_PROPS_READ | CHR_PROPS_WRITE);
   bb_threshold.setPermission(SECMODE_OPEN, SECMODE_OPEN);
@@ -68,7 +65,6 @@ void setup_bb_svc() {
   bb_threshold.begin();
   bb_threshold.write8(transient_cfg.threshold);
 
-  bb_debounce.begin();
   bb_debounce.setUserDescriptor("Debounce");
   bb_debounce.setProperties(CHR_PROPS_READ | CHR_PROPS_WRITE);
   bb_debounce.setPermission(SECMODE_OPEN, SECMODE_OPEN);
@@ -79,12 +75,12 @@ void setup_bb_svc() {
 }
 
 void init_ble() {
-  Bluefruit.configPrphBandwidth(BANDWIDTH_LOW);
   Bluefruit.begin();
-  Bluefruit.setTxPower(0);  // TODO: tune this
+  Bluefruit.configPrphBandwidth(BANDWIDTH_LOW);
+  Bluefruit.autoConnLed(false);
+  Bluefruit.setTxPower(0);  
   Bluefruit.setName("BarkBit");
-  // bleuart.begin();
-
+  
   bledis.setManufacturer("Gregus Archetectus");
   bledis.setModel("BarkBit 1");
   bledis.begin();
@@ -104,7 +100,6 @@ void init_ble() {
 
 void log() {
   mma.read();
-  // rprintf(0, "MMA -> X:%d\tY:%d\tZ:%d.\n", mma.x, mma.y, mma.z);
   char buf[50];
   sprintf(buf, "MMA->Xg:%f\tYg:%f\tZg:%f.\n", mma.x_g, mma.y_g, mma.z_g);
   rwrite_string(0, buf);
@@ -126,7 +121,7 @@ void ble_push_cb(TimerHandle_t t) {
 }
 
 const uint16_t cfg_size = 2;
-const char * cfg_filename = "/bb.cfg";
+const char *cfg_filename = "/bb.cfg";
 void save_cfg() {
   File cfg_file(InternalFS);
   cfg_file.open(cfg_filename, FILE_O_WRITE);
@@ -140,8 +135,7 @@ void load_cfg() {
   File cfg_file(InternalFS);
   cfg_file.open(cfg_filename, FILE_O_READ);
   if (!cfg_file || cfg_file.size() != cfg_size) {
-    if(cfg_file)
-    {
+    if (cfg_file) {
       rprintf(0, "Invalid config size of %d. Resetting.\n", cfg_file.size());
       InternalFS.remove(cfg_filename);
     } else {
@@ -156,23 +150,22 @@ void load_cfg() {
 }
 
 void setup() {
+  sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
+  sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
+
   pinMode(PIN_FLASH_CS, OUTPUT);
   digitalWrite(PIN_FLASH_CS, HIGH);
 
   InternalFS.begin();
   load_cfg();
 
-  sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
-
   while (!mma.begin(0x1C, &transient_cfg)) {
-    rwrite_string(0, "MMA8451: couldnt start\n");
+    rprintf(0, "[%d]MMA8451: couldnt start\n", millis());
     delay(1000);
   }
   rprintf(0, "MMA8451 initialized with t:%d, d:%d!\n", transient_cfg.threshold, transient_cfg.debounce_count);
 
   Serial.end();
-
-  sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
 
   // pinMode(PIN_MMA_INT1, INPUT_PULLUP);
   // attachInterrupt(digitalPinToInterrupt(PIN_MMA_INT1), log, FALLING);
@@ -186,7 +179,6 @@ void setup() {
   ble_push.start();
 
   suspendLoop();
-  waitForEvent();
 }
 
 void loop() {}

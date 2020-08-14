@@ -13,7 +13,7 @@
 
 #include <Wire.h>
 
-#define USE_SENSOR  //!< Support the sensor library; comment out to compile/run
+//#define USE_SENSOR  //!< Support the sensor library; comment out to compile/run
                     //!< without sensor library.
 #ifdef USE_SENSOR
 #include <Adafruit_Sensor.h>
